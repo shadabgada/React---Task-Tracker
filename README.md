@@ -6,7 +6,7 @@ The task records are stored in JSON server
 
 ## Screenshot
 
-![image](Screenshot.png)
+![image](Screen.png)
 
 ## Available Scripts
 
