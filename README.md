@@ -1,3 +1,9 @@
+## Summary
+Task Tracker:\
+Add task message, time and reminder status\
+Delete the task\
+The task records are stored in JSON server
+
 ## Available Scripts
 
 In the project directory, you can run:
