@@ -11,12 +11,6 @@
       "day": "evening",
       "reminder": true,
       "id": 2
-    },
-    {
-      "text": "can",
-      "day": "fall",
-      "reminder": true,
-      "id": 3
     }
   ]
 }
