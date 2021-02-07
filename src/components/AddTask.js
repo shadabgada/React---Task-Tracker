@@ -2,6 +2,7 @@ import {useState} from 'react'
 
 const AddTask= ({addTask})=>{
 
+//useState is React Hook
     const [text, setText] = useState('')
     const [day, setDay] = useState('')
     const [reminder, setReminder] = useState(false)
