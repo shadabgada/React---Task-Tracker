@@ -81,6 +81,16 @@ const onToggle = async (id)=>{
   console.log(id)
 }
 
+//Update
+// const updateTask = async(task)=>{
+//   db.collection("tasks").doc(doc_id).set({
+//     id:id,
+//     text: task.text,
+//     day: task.day,
+//     reminder: task.reminder,
+//     timestamp: firebase.firestore.FieldValue.serverTimestamp()
+//   },{merge:true})
+
 
 //Add Task
 const addTask = async (task)=>{
