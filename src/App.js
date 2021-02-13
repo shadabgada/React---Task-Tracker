@@ -4,6 +4,8 @@ import Header from './components/Header';
 import Tasks from './components/Tasks'
 import AddTask from './components/AddTask'
 
+import firebase from 'firebase'
+
 import Button from '@material-ui/core/Button';
 
 import db from "./firebase";
@@ -27,7 +29,7 @@ const App = () =>{
     //This method gets data from local json server
     //getTasks()
 
-    db.collection('tasks').onSnapshot(snapshot => {
+    db.collection('tasks').orderBy('timestamp','desc').onSnapshot(snapshot => {
       setTasks(snapshot.docs.map(doc=>doc.data()))
     })
 
@@ -96,11 +98,13 @@ const addTask = async (task)=>{
 
   const data = await res.json();
 
+  //Adds the record to Firebase
   db.collection('tasks').add({
     id:id,
     text: task.text,
     day: task.day,
-    reminder: task.reminder
+    reminder: task.reminder,
+    timestamp: firebase.firestore.FieldValue.serverTimestamp()
   })
 
   setTasks([...tasks,data])
