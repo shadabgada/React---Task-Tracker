@@ -11,6 +11,18 @@
       "day": "evening",
       "reminder": true,
       "id": 2
+    },
+    {
+      "text": "sds",
+      "day": "dsds",
+      "reminder": true,
+      "id": 3
+    },
+    {
+      "text": "asd",
+      "day": "sds",
+      "reminder": true,
+      "id": 4
     }
   ]
 }

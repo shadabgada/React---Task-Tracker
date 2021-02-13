@@ -4,11 +4,18 @@ import Header from './components/Header';
 import Tasks from './components/Tasks'
 import AddTask from './components/AddTask'
 
+import Button from '@material-ui/core/Button';
+
+import db from "./firebase";
+
 const App = () =>{
 
   //This syntax is used for state management (Here, its Global State)
   // First value contains key value pair.
-  //Second is the function which can be used to change states values
+
+  //Second parameter is the dependency
+  //If it is [], then useEffect is called only when page loads/refreshes
+  //If we have some values then its gets called every time that parameter changes
   const [tasks, setTasks] = useState([])
 
   useEffect(()=>{
@@ -16,7 +23,14 @@ const App = () =>{
       const tasksFromServer = await fetchTasks()
       setTasks(tasksFromServer)
     }
-    getTasks()
+
+    //This method gets data from local json server
+    //getTasks()
+
+    db.collection('tasks').onSnapshot(snapshot => {
+      setTasks(snapshot.docs.map(doc=>doc.data()))
+    })
+
   },[])
 
 //Fetch tasks
@@ -68,7 +82,7 @@ const onToggle = async (id)=>{
 
 //Add Task
 const addTask = async (task)=>{
-  //  const id =Math.floor(Math.random()*1000)+1
+    const id =Math.floor(Math.random()*1000)+1
 
   //  const newTask = {id, ...task}
 
@@ -81,7 +95,16 @@ const addTask = async (task)=>{
   })
 
   const data = await res.json();
+
+  db.collection('tasks').add({
+    id:id,
+    text: task.text,
+    day: task.day,
+    reminder: task.reminder
+  })
+
   setTasks([...tasks,data])
+  
 }
 
 //Show Form boolean variable
@@ -102,6 +125,11 @@ const onAdd = () =>{
       {showAddTask && <AddTask addTask={addTask}/>}
 
       {tasks.length>0 ? (<Tasks tasks={tasks} onDelete={deleteTask} onToggle={onToggle}/>):('No Tasks to show')}
+
+      <br></br>
+      <Button variant="contained" color="primary">
+         Primary
+      </Button>
     </div>
   );
 }
