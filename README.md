@@ -1,9 +1,15 @@
 ## Summary
-<b>Task Tracker:</b>\
-Add task message, time and reminder status\
-<b>Delete the task:</b>\
-The task records are stored in Firebase Database
-<br>
+
+<i>
+<ul>
+    <li>Add task message, time and reminder status</li>
+    <li>Delete the task:</li>
+    <li>Update reminder on toggle</li>
+    <li>Delete records</li>
+    <li>All the task records are stored in Firebase</li>
+    <li>Action are stored in realtime</li>
+</ul>
+</i>
 
 ## Screenshot
 

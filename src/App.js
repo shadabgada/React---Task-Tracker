@@ -30,7 +30,7 @@ const App = () =>{
     //getTasks()
 
     db.collection('tasks').orderBy('timestamp','desc').onSnapshot(snapshot => {
-      setTasks(snapshot.docs.map(doc=>doc.data()))
+      setTasks(snapshot.docs.map(doc=>({...doc.data(),doc_id:doc.id})))
     })
 
   },[])
@@ -53,32 +53,26 @@ const fetchTask = async (id) => {
 
 
 //Delete Task
-  const deleteTask = async (id) =>{
-    await fetch(`http://localhost:5000/tasks/${id}`,{
-      method: 'DELETE'
-    })
+  const deleteTask = async (doc_id) =>{
 
-    setTasks(tasks.filter((task)=>task.id !==id))
-    console.log('delete',id)
+    db.collection('tasks').doc(doc_id.toString()).delete()
+    setTasks(tasks.filter((task)=>task.doc_id !==doc_id))
+    console.log('delete',doc_id)
   }
 
 
 //Toggle reminder
-const onToggle = async (id)=>{
+const onToggle = async (doc_id)=>{
 
-  const taskToToggle = await fetchTask(id)
-  const updTask = {...taskToToggle,reminder:!taskToToggle.reminder}
-  const res = await fetch(`http://localhost:5000/tasks/${id}`,{
-    method:'PUT',
-    headers:{
-      'Content-Type':'application/json'
-    },
-    body: JSON.stringify(updTask)
-  })
+   const reminder = await db.collection("tasks").doc(doc_id.toString()).get().then(documentSnapshot => {
+    return documentSnapshot.data().reminder;
+  });
 
+  db.collection("tasks").doc(doc_id.toString()).set({
+    reminder: !reminder,
+  },{merge:true})
 
-  setTasks(tasks.map((task)=>task.id===id?{...task, reminder:!task.reminder}:task))
-  console.log(id)
+  console.log(reminder)
 }
 
 //Update
@@ -98,15 +92,7 @@ const addTask = async (task)=>{
 
   //  const newTask = {id, ...task}
 
-  const res = await fetch(`http://localhost:5000/tasks`,{
-    method:'POST',
-    headers:{
-      'Content-type':'application/json'
-    },
-    body:JSON.stringify(task)
-  })
 
-  const data = await res.json();
 
   //Adds the record to Firebase
   db.collection('tasks').add({
@@ -117,7 +103,7 @@ const addTask = async (task)=>{
     timestamp: firebase.firestore.FieldValue.serverTimestamp()
   })
 
-  setTasks([...tasks,data])
+  setTasks([...tasks,task])
   
 }
 
@@ -140,10 +126,12 @@ const onAdd = () =>{
 
       {tasks.length>0 ? (<Tasks tasks={tasks} onDelete={deleteTask} onToggle={onToggle}/>):('No Tasks to show')}
 
+      {/* 
+      Material UI button
       <br></br>
       <Button variant="contained" color="primary">
          Primary
-      </Button>
+      </Button> */}
     </div>
   );
 }
