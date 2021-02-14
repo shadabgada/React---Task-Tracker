@@ -1,4 +1,13 @@
-## Summary
+# Summary
+
+## Important Note
+
+<b>Master Branch:</b> Interacts with JSON server
+
+<b>Task-Tracker-Firebase branch:</b> Interacts with Firebase
+
+<hr>
+
 Task Tracker:\
 Add task message, time and reminder status\
 Delete the task\
