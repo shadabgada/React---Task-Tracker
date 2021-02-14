@@ -7,7 +7,7 @@
     <li>Update reminder on toggle</li>
     <li>Delete records</li>
     <li>All the task records are stored in Firebase</li>
-    <li>Action are stored in realtime</li>
+    <li>Action are performed in realtime</li>
 </ul>
 </i>
 
