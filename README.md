@@ -1,8 +1,8 @@
 ## Summary
-Task Tracker:\
+<b>Task Tracker:</b>\
 Add task message, time and reminder status\
-Delete the task\
-The task records are stored in JSON server
+<b>Delete the task:</b>\
+The task records are stored in Firebase Database
 <br>
 
 ## Screenshot
@@ -64,5 +64,5 @@ Step 3: `firebase deploy`
 
 <br>
 
-## App Link
+## View Live Demo at: 
 https://task-tracker-2e6d8.web.app/
