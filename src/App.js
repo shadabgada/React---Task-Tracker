@@ -9,7 +9,7 @@ import firebase from 'firebase'
 import Button from '@material-ui/core/Button';
 
 import db from "./firebase";
-
+import UpdateTask from './components/UpdateTask';
 const App = () =>{
 
   //This syntax is used for state management (Here, its Global State)
@@ -17,7 +17,7 @@ const App = () =>{
 
   //Second parameter is the dependency
   //If it is [], then useEffect is called only when page loads/refreshes
-  //If we have some values then its gets called every time that parameter changes
+  //If we have some values then it gets called every time that parameter changes
   const [tasks, setTasks] = useState([])
 
   useEffect(()=>{
@@ -33,6 +33,12 @@ const App = () =>{
       setTasks(snapshot.docs.map(doc=>({...doc.data(),doc_id:doc.id})))
     })
 
+    var today = new Date();
+var date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
+var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
+var dateTime = date+' '+time;
+
+    console.log(dateTime)
   },[])
 
 //Fetch tasks
@@ -75,23 +81,22 @@ const onToggle = async (doc_id)=>{
   console.log(reminder)
 }
 
-//Update
-// const updateTask = async(task)=>{
-//   db.collection("tasks").doc(doc_id).set({
-//     id:id,
-//     text: task.text,
-//     day: task.day,
-//     reminder: task.reminder,
-//     timestamp: firebase.firestore.FieldValue.serverTimestamp()
-//   },{merge:true})
-
+//Update task
+const updateTask = async(task)=>{
+  db.collection("tasks").doc(task.doc_id).set({
+    id:task.id,
+    text: task.text,
+    day: task.day,
+    reminder: task.reminder,
+    timestamp: firebase.firestore.FieldValue.serverTimestamp()
+  },{merge:true})
+}
 
 //Add Task
 const addTask = async (task)=>{
     const id =Math.floor(Math.random()*1000)+1
 
   //  const newTask = {id, ...task}
-
 
 
   //Adds the record to Firebase
@@ -112,19 +117,33 @@ const addTask = async (task)=>{
 // For ex: true?():()
 //{showAddTask?(<AddTask addTask={addTask}/>):('No Form')}
 const [showAddTask, setShowAddTask] =useState(false)
-
-
 const onAdd = () =>{
   setShowAddTask(!showAddTask)
 } 
 
+const [updateTaskValue, setUpdateTaskValue] = useState({})
+
+
+const [showUpdateTask, setShowUpdateTask] =useState(false)
+const onUpdate = (task) =>{
+  setShowUpdateTask(!showUpdateTask)
+  setUpdateTaskValue(task)
+  console.log(task)
+} 
+
+
   return (
     <div className="container">
+
       <Header onAdd={onAdd} showAdd={showAddTask}/>
 
-      {showAddTask && <AddTask addTask={addTask}/>}
+      {showAddTask && <AddTask addTask={addTask} onAdd={onAdd}/>}
 
-      {tasks.length>0 ? (<Tasks tasks={tasks} onDelete={deleteTask} onToggle={onToggle}/>):('No Tasks to show')}
+
+      {showUpdateTask && <UpdateTask updateTask={updateTask} updateTaskValue={updateTaskValue} onUpdate={onUpdate} />}
+
+
+      {tasks.length>0 ? (<Tasks tasks={tasks} onDelete={deleteTask} onToggle={onToggle} onUpdate={onUpdate}/>):('No Tasks to show')}
 
       {/* 
       Material UI button

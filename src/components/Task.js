@@ -1,11 +1,18 @@
 import { FaTimes } from 'react-icons/fa';
+import {FaEdit} from 'react-icons/fa'
+
 //Parameter should be in curly braces
-const Task = ({task,onDelete,onToggle}) => {
+const Task = ({task,onDelete,onToggle, onUpdate}) => {
     return (
         <div className={`task ${task.reminder ? 'reminder':''}`}  onDoubleClick={()=>onToggle(task.doc_id)}>
             <h3>
                 {task.text}
-                <FaTimes style={{color:'red', cursor:'pointer'}} onClick={()=>onDelete(task.doc_id)}/>
+                <div>
+
+                    {/* https://react-icons.github.io/react-icons/icons?name=fa */}
+                    <FaEdit  onClick={()=>onUpdate(task)}/>
+                    <FaTimes style={{color:'red', cursor:'pointer'}} onClick={()=>onDelete(task.doc_id)}/>
+                </div>
             </h3>
             <p>{task.day}</p>
          </div>

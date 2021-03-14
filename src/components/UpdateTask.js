@@ -1,11 +1,13 @@
 import {useState} from 'react'
 
-const AddTask= ({addTask,onAdd})=>{
+const UpdateTask= ({updateTask,updateTaskValue,onUpdate})=>{
 
 //useState is React Hook
-    const [text, setText] = useState('')
-    const [day, setDay] = useState('')
-    const [reminder, setReminder] = useState(false)
+    const [id, setId] = useState(updateTaskValue.id)
+    const [text, setText] = useState(updateTaskValue.text)
+    const [day, setDay] = useState(updateTaskValue.day)
+    const [reminder, setReminder] = useState(updateTaskValue.reminder)
+    const [doc_id, setDoc_id] = useState(updateTaskValue.doc_id)
 
     const onSubmit = (e) =>{
         e.preventDefault()
@@ -14,17 +16,15 @@ const AddTask= ({addTask,onAdd})=>{
             alert('Please enter text')
             return
         }
-
         if(!day){
             alert('Please enter day and time')
             return
         }
 
-        addTask({text,day,reminder})
-        setText('')
-        setDay('')
-        setReminder(false)
-        onAdd()
+        updateTask({id,text,day,reminder,doc_id});
+        
+        //This function is to hide the form on save
+        onUpdate()
     }
 
     return (
@@ -39,8 +39,8 @@ const AddTask= ({addTask,onAdd})=>{
             </div>
             <div className='form-control'>
                 <label>Day & Time</label>
-                <input type="datetime-local" 
-                placeholder="Date & Time"
+                <input type="datetime-local"  
+                placeholder='Date & Time'
                 value={day}
                 onChange={(e)=>setDay(e.target.value)}
                 />
@@ -53,9 +53,9 @@ const AddTask= ({addTask,onAdd})=>{
                 onChange={(e)=>setReminder(e.currentTarget.checked)}/>
             </div>
 
-            <input type='submit' value='Save Task' className='btn btn-block' />
+            <input type='submit' value='Update Task' className='btn btn-block' />
         </form>
     )
 }
 
-export default AddTask;
+export default UpdateTask;
